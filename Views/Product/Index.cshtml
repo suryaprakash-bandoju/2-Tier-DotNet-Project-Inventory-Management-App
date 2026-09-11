@@ -1,0 +1,129 @@
+@model List<InventoryManagement.Models.Product>
+
+@{
+    ViewData["Title"] = "Inventory Dashboard";
+}
+
+<div class="hero">
+    <div>
+        <p class="label">INVENTORY MANAGEMENT</p>
+        <h1>Product Dashboard</h1>
+        <p>Manage your products and keep track of available inventory.</p>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="stat-card">
+        <span>Total Products</span>
+        <strong>@Model.Count</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Total Stock</span>
+        <strong>@Model.Sum(p => p.Quantity)</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Inventory Value</span>
+        <strong>₹@Model.Sum(p => p.Price * p.Quantity).ToString("N0")</strong>
+    </div>
+</div>
+
+<div class="content-grid">
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Products</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@product.Name</strong>
+                        </td>
+
+                        <td>@product.Category</td>
+
+                        <td>₹@product.Price.ToString("N0")</td>
+
+                        <td>
+                            <span class="stock">@product.Quantity</span>
+                        </td>
+
+                        <td>
+                            <form asp-controller="Product"
+                                  asp-action="Delete"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@product.Id" />
+
+                                <button class="delete-btn"
+                                        type="submit">
+                                    Delete
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel add-panel">
+
+        <h2>Add Product</h2>
+
+        <form asp-controller="Product"
+              asp-action="Add"
+              method="post">
+
+            <label>Product Name</label>
+            <input type="text"
+                   name="Name"
+                   placeholder="Enter product name"
+                   required />
+
+            <label>Category</label>
+            <input type="text"
+                   name="Category"
+                   placeholder="e.g. Electronics"
+                   required />
+
+            <label>Price</label>
+            <input type="number"
+                   name="Price"
+                   step="0.01"
+                   placeholder="Enter price"
+                   required />
+
+            <label>Quantity</label>
+            <input type="number"
+                   name="Quantity"
+                   placeholder="Enter quantity"
+                   required />
+
+            <button class="add-btn" type="submit">
+                Add Product
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
