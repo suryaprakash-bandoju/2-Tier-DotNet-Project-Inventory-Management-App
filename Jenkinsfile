@@ -16,7 +16,7 @@ pipeline {
 
         stage('Restoring Dependancies') {
             steps {
-                sh 'sotnet restore'
+                sh 'dotnet restore'
             }
         }
 
