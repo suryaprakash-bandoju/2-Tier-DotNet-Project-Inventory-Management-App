@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        stage('Restoring Dependancies') {
+        stage('Restoring Dependencies') {
             steps {
                 sh 'dotnet restore'
             }
@@ -26,5 +26,4 @@ pipeline {
             }
         }
     }
-
 }
